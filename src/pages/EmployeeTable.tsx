@@ -1,18 +1,45 @@
-import {Button, Container} from "react-bootstrap";
+import {Button, Container, Table} from "react-bootstrap";
 import {useEmployeeApi} from "../hooks/useEmployeeApi.ts";
+import {useState} from "react";
 
 export function EmployeeTable() {
 
-    const {fetchEmployees} = useEmployeeApi();
+    const {fetchEmployees, loading, error} = useEmployeeApi();
+    const [employees, setEmployees] = useState([]);
 
+    const handleLoadEmployees = () => {
+        fetchEmployees().then(data => setEmployees(data)).catch(err => console.error(err));
+    }
+
+    if (loading) {
+        return <div>Lade Mitarbeiter...</div>;
+    }
+
+    if (error) {
+        return <div> {error}</div>;
+    }
 
     return (
         <Container>
-            <Button onClick={() => fetchEmployees().then(data => console.log(data))}>
+            <Button onClick={handleLoadEmployees}>
                 Mitarbeiter laden
             </Button>
-
-
+            <Table>
+                <thead>
+                <tr>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                </tr>
+                </thead>
+                <tbody>
+                {employees.map((employee, index) => (
+                    <tr key={index}>
+                        <td>{employee.firstName}</td>
+                        <td>{employee.lastName}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </Table>
         </Container>
     )
 }

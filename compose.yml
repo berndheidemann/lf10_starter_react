@@ -73,9 +73,6 @@ services:
       AUTHENTIK_SECRET_KEY: your-secret-key-change-this
       AUTHENTIK_BOOTSTRAP_EMAIL: a@b.com
       AUTHENTIK_BOOTSTRAP_PASSWORD: secret
-    volumes:
-      - ./media:/media
-      - ./custom-templates:/templates
     ports:
       - "9000:9000"
       - "9443:9443"
